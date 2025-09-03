@@ -1,7 +1,7 @@
 #Copyright (C) Haoriwa 2024-2025
 #All rights reserved.
 #using MIT license,under LICENSE.txt.
-"""TidrawWindowLib. easy to create a 
+"""TiWindowLib. easy to create a 
 gui program. No OOP, only functions.
 free to use for personal, organization and 
 community.
@@ -21,6 +21,7 @@ from time import *
 from ti_system import *
 from random import *
 import sys
+import gc
 #=================================
 def Cinfo(info=1):
   return {
@@ -48,6 +49,10 @@ def WindowBase(title="Twl",dark=False):
   draw_text(235,20,"esc to quit")
   return 0
 
+def TerminateProcess(code=None):
+  gc.collect()
+  raise SystemExit(code)
+
 def WindowElementDraw(elementid):
   if elementid==1:
     set_color(0,0,0)
@@ -67,7 +72,7 @@ def WindowMain(keepwindow=0):
       pass
     else:
       if key=="esc":
-        sys.exit(0)
+        TerminateProcess()
     if key=="enter":
       set_color(randint(0,255),randint(0,255),randint(0,255))
       fill_rect(0,23,320,300)
