@@ -5,7 +5,7 @@ import sys
 from ti_system import *
 def version(gettype=0):
   """Get version, arg(s): 1.give 0 to get version tuple. give 1 to get copyright str."""
-  if gettype==0:return 1,0,0
+  if gettype==0:return 1,0,1
   elif gettype==1:return "Copyright (C) Haoriwa all rights reserved"
   else:raise ValueError("Unknown arguments.")
 class WinBaseObject:
@@ -28,8 +28,10 @@ class WinBaseObject:
     self.textcolorred=textcolorred
     self.textcolorgreen=textcolorgreen
     self.textcolorblue=textcolorblue
+  def GetWindowInfo(self):
+    """Get window info. no arg needed."""
   def CreateWindow(self,winbarred,winbargreen,winbarblue,title,textcolorred,textcolorgreen,textcolorblue,linebold="thin",linestyle="solid",winx=0,winy=0,winmaxx=0,winmaxy=0):
-    """Create window, 9 args needed.line thickness,line style are default by thin and solid. r,g,b for color of title bar, and give a text and color for your title."""
+    """For create a window. 8 args needed. winbarred:window title bar red,winbargreen:window title bar green,winbarblue:window title bar blue,title:text for title,textred:red,textgreen:green,textblue:blue.optional args:linebold(str)=thin:(thin,thick),linestyle(str)=solid:(solid,dotted,dashed),winx=0:minimum x,winy=0:minimum y,winmaxx=0:maxium x,winmaxy=0:maxiun y."""
     self.winbarred=winbarred
     self.winbargreen=winbargreen
     self.winbarblue=winbarblue
@@ -48,7 +50,6 @@ class WinBaseObject:
     return 0
   def DrawWindow(self):
     """Draw the window that created."""
-    use_buffer()
     set_color(self.winbarred,self.winbargreen,self.winbarblue)
     fill_rect(0,0,320,22)
     set_color(0,0,0)
@@ -62,7 +63,7 @@ class WinBaseObject:
     paint_buffer()
   @staticmethod
   def TerminateProcess(code=None):
-    """Terminate app. 1 arg needed. give quit code."""
+    """Terminate app. 1 optional arg. give quit code."""
     sys.stdout.write("APP exit with code:%s."%(code))
     raise SystemExit(code)
   def SetAPPInfo(self,ver,company,copyrights,originalname):
@@ -81,6 +82,33 @@ class WinBaseObject:
 class WinWidgetsObject:
   """Window widgets object."""
   def __init__(self):pass
+  class ToolBar:
+    def __init__(self,toolbarenb=False,toolbarred=None,toolbargreen=None,toolbarblue=None,tbid=None):
+      self.toolbarenb=toolbarenb
+      self.toolbarred=toolbarred
+      self.toolbargreen=toolbargreen
+      self.toolbarblue=toolbarblue
+      self.tbid=tbid
+    def CreateToolBar(self,toolbarenb,toolbarred,toolbargreen,toolbarblue):
+      self.toolbarenb=toolbarenb
+      self.toolbarred=toolbarred
+      self.toolbargreen=toolbargreen
+      self.toolbarblue=toolbarblue
+    def AllocToolBarText(self,tbid):
+      """Allocate a ID for text. tbid:give a id."""
+      self.tbid=tbid
+    def SetToolBarText(self,tbid,text,x,y,r,g,b,draw=False):
+      """Setup a toolbar text. tbid for toolbar text id, your text with x,y,r,g,b arguments and count for text."""
+      if self.tbid==tbid and draw:
+        set_color(r,g,b)
+        draw_text(x,y,text)
+    def DrawToolBar(self):
+      """Render toolbar. no argument."""
+      if self.toolbarenb:
+        set_color(self.toolbarred,self.toolbargreen,self.toolbarblue)
+        fill_rect(0,22,320,22)
+        set_color(0,0,0)
+        draw_line(0,44,320,44)
   def SetText(self,x,y,text,r,g,b):
     """Setup a text, arguments: x,y,text,r,g,b."""
     set_color(r,g,b)
