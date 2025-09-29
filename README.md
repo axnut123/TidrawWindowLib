@@ -1,2 +1,2 @@
 # TidrawWindowLib
-A gui lib based on Ti draw and Ti system
+A gui lib based on TI draw and TI system
